@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# ! \
+: &&
+{ echo y ;:; } ||\
+{ echo n ;:; }
+
+#	{ cd /var/lib/irods
+#	  ./irodsctl start
+#	  if [ "$1" = 'delete' ] ; then irm -f VERSION.json ; fi
+#	  ./irodsctl stop
+#	  cd ..
+#	}
+
+#        valgrind --tool=memcheck --leak-check=full --trace-children=yes \
+#          --num-callers=200 --time-stamp=yes --track-origins=yes \
+#          --keep-stacktraces=alloc-and-free --freelist-vol=10000000000 \
+#          --log-file=$HOME/valgrind_out_%p.txt /usr/sbin/irodsServer
+#        sleep 4
+#        iput irods/VERSION.json
