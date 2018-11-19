@@ -28,5 +28,6 @@ cd /
 # Build and install iCommands.
 mkdir icommands_build
 cd icommands_build
-cmake -GNinja /irods_client_icommands
+cmake -DCMAKE_BUILD_TYPE=Debug -GNinja /irods_client_icommands
+#cmake -GNinja /irods_client_icommands
 ninja package
