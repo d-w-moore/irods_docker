@@ -1,0 +1,7 @@
+FROM irods_pkg:latest
+
+ADD irods_run_script /
+
+RUN chmod +x /irods_run_script
+
+CMD ["/irods_run_script", "wait"]

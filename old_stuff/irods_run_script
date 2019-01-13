@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ " $1 " = *\ db_start\ * ]] ; then
+    service postgresql start && \
+fi
+
+if [[ " $1 " = *\ irods_setup\ * ]] ; then
+    sudo python /var/lib/irods/scripts/setup_irods.py < /var/lib/irods/packaging/localhost_setup_postgres.input
+fi
+
+if [[ "$1" = *\ wait\ * ]] ; then
+    while : ; do
+	sleep 1
+    done
+fi
