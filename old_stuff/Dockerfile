@@ -8,10 +8,6 @@ RUN apt-get update && \
 
 ADD db_commands.txt /db_commands.txt
 
-ADD run_irods.sh  /run_irods.sh
-
-RUN chmod +x /run_irods.sh
-
 # Setup iRODS.
 RUN wget -qO - https://packages.irods.org/irods-signing-key.asc | apt-key add -; \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/renci-irods.list; \
@@ -20,5 +16,9 @@ RUN wget -qO - https://packages.irods.org/irods-signing-key.asc | apt-key add -;
 
 RUN service postgresql start && su - postgres -c "psql -f /db_commands.txt" ; \
     service postgresql stop
+
+ADD run_irods.sh  /run_irods.sh
+
+RUN chmod +x /run_irods.sh
 
 CMD [ "/run_irods.sh" ] 
