@@ -1,11 +1,13 @@
-#! /bin/sh
+#! /bin/bash
 
 service postgresql start
 
+tries=0
 until pg_isready -q 
 do
-  echo >&2 "Waiting for database ..."
+  echo >&2 "Waiting for database ..." $((++tries))
   sleep 1
+  [ $tries -ge 16 ] && break
 done
 
 pg_isready -q || { echo >&2 "Quit waiting for ICAT database"; exit 16; }
