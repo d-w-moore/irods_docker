@@ -28,7 +28,7 @@ fi && echo >&2  $'\n --> IRODS Server is running \n'
 f() { trap -- INT; trap -- TERM; }
 trap 'f' TERM INT
 
-sleep $(( (1 << 31) - 1 )) # seconds to heat death in a 32-bit universe
+sleep $(( (1 << 31) - 1 ))'d' # a very long wait
 
 service irods stop && echo >&2 $'\n <-- IRODS Server is shut down' 
 service postgresql stop
