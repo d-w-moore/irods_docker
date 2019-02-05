@@ -19,6 +19,10 @@ RUN service postgresql start && su - postgres -c "psql -f /db_commands.txt" ; \
 
 ADD run_irods.sh  /run_irods.sh
 
-RUN chmod +x /run_irods.sh
+# for Docker under windows, remove control-M chars for shebang line to work:
 
-CMD [ "/run_irods.sh" ] 
+RUN tr -d '\015' </run_irods.sh >/tmp/run_irods.sh.rm_cM && \
+    mv /tmp/run_irods.sh.rm_cM /run_irods.sh ; \
+    chmod +x /run_irods.sh
+
+CMD [ "/run_irods.sh" ]

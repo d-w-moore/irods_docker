@@ -1,9 +1,13 @@
 #! /bin/bash
 
+ODBC_file=/etc/odbcinst.ini
+[ -f $ODBC_file -a ! -f $ODBC_file.orig ] && {
+  perl -i.orig -pe 's/^(\s*CommLog\s*=\s*)(\b1\b)(.*)/${1}0${3}/' $ODBC_file
+}
 service postgresql start
 
 # - parameters for waiting on DB to start
-timeout=30 
+timeout=30
 tries=0
 
 until pg_isready -q || [ $tries -ge $timeout ]
@@ -27,14 +31,18 @@ else
 
 fi && echo >&2  $'\n\t --> IRODS Server is running \n'
 
+trap  " echo `date +%s` `date` suspend/continue  >>/tmp/docker_events
+" HUP CONT
+
 trap "
     echo >&2 ' ... attempting orderly shutdown of container ... '
-    service irods stop && echo >&2 $'\\n\\t <-- IRODS Server is shut down' 
+    echo `date +%s` `date` start/stop  >>/tmp/docker_events
+    service irods stop && echo >&2 $'\\n\\t <-- IRODS Server is shut down'
     service postgresql stop
     trap -- '' EXIT ; exit 1
 " TERM INT EXIT
 
-#==============
+#============== main loop ; signals will likely occur during the sleep
 
 while true
 do
