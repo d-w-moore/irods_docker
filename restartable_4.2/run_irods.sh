@@ -25,17 +25,19 @@ else
   echo >&2 "Starting up iRODS ..."
   service irods start
 
-fi && echo >&2  $'\n --> IRODS Server is running \n'
+fi && echo >&2  $'\n\t --> IRODS Server is running \n'
 
-cleanup() 
-{
-    echo >&2 " ... attempting shutdown of irods and ICAT "
-    service irods stop && echo >&2 $'\n <-- IRODS Server is shut down' 
+trap "
+    echo >&2 ' ... attempting orderly shutdown of container ... '
+    service irods stop && echo >&2 $'\\n\\t <-- IRODS Server is shut down' 
     service postgresql stop
-}
-f() { trap -- EXIT; trap -- INT; trap -- TERM; cleanup; }
+    trap -- '' EXIT ; exit 1
+" TERM INT EXIT
 
-trap 'f' TERM INT EXIT
+#==============
 
-sleep $(( (1 << 31) - 1 ))'d' # a very long wait
+while true
+do
+  sleep 1
+done
 
